@@ -213,6 +213,14 @@ function islandora_openseadragon_tokens($type, $tokens, array $data = array(), a
   $dsid = $data['islandora_openseadragon']['dsid'];
   $token = $data['islandora_openseadragon']['token'];
 
+  // Tokens may be omitted if anonymous has access to the asset.
+  if ($pid && $dsid && variable_get('islandora_openseadragon_omitable_token', FALSE)) {
+    $object = islandora_object_load($pid);
+    if (islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$dsid], drupal_anonymous_user())) {
+      $token = '';
+    }
+  }
+
   foreach ($tokens as $name => $original) {
     if ($name == 'pid') {
       $replacements[$original] = $pid;

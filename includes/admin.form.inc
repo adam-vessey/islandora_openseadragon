@@ -40,6 +40,12 @@ function islandora_openseadragon_admin(array $form, array &$form_state) {
       '#default_value' => islandora_system_settings_form_default_value('islandora_openseadragon_fit_to_aspect_ratio', FALSE, $form_state),
       '#description' => t('On the initial page load, the entire image will be visible in the viewport.'),
     ),
+    'islandora_openseadragon_omitable_token' => array(
+      '#type' => 'checkbox',
+      '#title' => t('Omit auth tokens when unnecessary'),
+      '#description' => t('If anonymous users have access to assets, it is not strictly necessary to use auth tokens, and it is likely desirable to avoid them for cachability purposes.'),
+      '#default_value' => islandora_system_settings_form_default_value('islandora_openseadragon_omitable_token', FALSE, $form_state),
+    ),
     'djatoka' => array(
       '#type' => 'fieldset',
       '#title' => t('Adore Djatoka Image Server Settings'),
@@ -94,6 +100,7 @@ function islandora_openseadragon_admin(array $form, array &$form_state) {
         '#default_value' => variable_get('islandora_openseadragon_iiif_identifier', '[islandora_openseadragon:url_token]'),
         '#element_validate' => array('token_element_validate'),
         '#token_types' => array('islandora_openseadragon'),
+        '#maxlength' => 1024,
       ),
       'islandora_openseadragon_iiif_token_tree' => array(
         '#type' => 'fieldset',
